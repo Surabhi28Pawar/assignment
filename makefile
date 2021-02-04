@@ -3,22 +3,26 @@ SRC = src
 INC = inc
 BIN = bin
 OBJS  = objs
+#LIB =  lib
+#LIBFILE = libmylib.a
 
 SOURCE = $(wildcard $(SRC)/*.c)
-
-_OBJ_FILES = file_1.0 main.o
-OBJECT = $(patsubst %,$(OBJS)/%, $(_OBJ_FILES))
+#SOURE = file_1.c file_2.c main.c
+#_OBJ_FILES = file_1.0 file_2.o main.o
+OBJECT = $(patsubst %,$(OBJS)/%, $(notdir $(SOURCE:'c=.o)))
 
 
 CC = gcc
 CFLAGS = -Wall -std=gnu99 -Iinc
 
-$(BIN)/$(TARGET) : $(OBJECT)
+$(BIN)/$(TARGET) : $(OBJECT) 
 	$(CC) -o $@ $^
 
-$(BIN)/%.o : $(SRC)/%.c
+$(OBJS)/%.o : $(SRC)/%.c
 	$(CC) $(CFLAGS) -C $< -o $@
 
+#$(LIB)/$(LIBFILE):
+#	ar rcs $@ $(OBJS)/*.o
 help :
 	@echo "src: $(SOURCE)"
 	@echo "obj: $(OBJECT)"
